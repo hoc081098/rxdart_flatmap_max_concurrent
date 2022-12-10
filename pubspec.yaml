@@ -1,0 +1,14 @@
+name: rxdart_flatmap_max_concurrent
+description: A sample command-line application.
+version: 1.0.0
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+dependencies:
+  rxdart: ^0.27.7
+  http: ^0.13.5
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.16.0
