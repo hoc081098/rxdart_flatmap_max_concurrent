@@ -13,7 +13,9 @@ Stream<void> sendRequest(_Entry entry) {
   return _client
       .send(entry.request)
       .asStream()
+      .doOnError(entry.completer.completeError)
       .doOnData(entry.completer.complete)
+      .onErrorResumeNext(Stream.empty())
       .doOnCancel(() => print('SimpleClient: <-- ${entry.request.url}'));
 }
 
