@@ -31,7 +31,9 @@ class SimpleClient extends http.BaseClient {
       return _client
           .send(entry.request)
           .asStream()
+          .doOnError(entry.completer.completeError)
           .doOnData(entry.completer.complete)
+          .onErrorResumeNext(Stream.empty())
           .doOnCancel(() => print('SimpleClient: <-- ${entry.request.url}'));
     }
 
@@ -65,7 +67,8 @@ void main() async {
     for (var i = 1; i <= 5; i++)
       simpleClient
           .get(Uri.parse('https://jsonplaceholder.typicode.com/users/$i'))
-          .then((res) => print('Response: id=$i -> ${res.statusCode}')),
+          .then((res) => print('Response: id=$i -> ${res.statusCode}'))
+          .onError((e, s) => print('Response: id=$i -> $e, $s')),
   ];
 
   await Future.wait(futures);
